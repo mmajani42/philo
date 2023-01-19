@@ -27,7 +27,7 @@ CFLAGS=		-Wall -Wextra
 all:		${OBJDIR} ${NAME}
 
 ${NAME}:	${OBJ} ${INC}
-			${CC} ${OBJ} -o ${NAME} -lpthread -fsanitize=thread
+			${CC} ${OBJ} -o ${NAME}
 
 ${OBJDIR}:
 			mkdir -p obj

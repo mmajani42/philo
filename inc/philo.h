@@ -6,7 +6,7 @@
 /*   By: mmajani <mmajani@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:11:53 by mmajani           #+#    #+#             */
-/*   Updated: 2023/01/16 19:15:01 by mmajani          ###   ########lyon.fr   */
+/*   Updated: 2023/01/19 16:54:49 by mmajani          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_data
 	int					nb;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		queue;
+	pthread_mutex_t		die;
 	int					alive;
 }						t_data;
 
@@ -65,8 +66,8 @@ int		create_threads(t_data *data);
 
 //Time
 
-long	timeElapsedSinceStart(void);
-int		custom_usleep(int time_in_ms);
+long	timenow(void);
+int		custom_usleep(int time_in_ms, t_philo *philo);
 
 //Utilitaries
 
