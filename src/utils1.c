@@ -6,7 +6,7 @@
 /*   By: mmajani <mmajani@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:20:25 by mmajani           #+#    #+#             */
-/*   Updated: 2023/01/16 18:20:27 by mmajani          ###   ########lyon.fr   */
+/*   Updated: 2023/01/21 15:48:39 by mmajani          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@ int	ft_isdigit(int c)
 	return (0);
 }
 
-int ft_isnum(char *str)
+int	ft_isnum(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
-    if (str[0] == '-')
-    {
-        i++;
-    }
+	if (str[0] == '-')
+	{
+		i++;
+	}
 	while (str[i])
 	{
 		if (ft_isdigit(str[i]) == 0)
@@ -63,9 +63,9 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return (0);
 }
 
-int     my_atoi(char *str)
+int	my_atoi(char *str)
 {
-   	int	i;
+	int	i;
 	int	res;
 	int	is_negative;
 
@@ -82,5 +82,5 @@ int     my_atoi(char *str)
 		res = (res * 10) + (str[i] - '0');
 		i++;
 	}
-	return (res * is_negative); 
+	return (res * is_negative);
 }

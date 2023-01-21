@@ -6,7 +6,7 @@
 /*   By: mmajani <mmajani@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:11:53 by mmajani           #+#    #+#             */
-/*   Updated: 2023/01/19 16:54:49 by mmajani          ###   ########lyon.fr   */
+/*   Updated: 2023/01/21 18:19:38 by mmajani          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,24 @@ typedef struct s_data
 {
 	t_philo				*philo;
 	int					*args;
-	int					nb;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		queue;
 	pthread_mutex_t		die;
 	int					alive;
+	int					start;
 }						t_data;
 
 //Parsing
 
-void	init_data(t_data *data);
-void	init_philos(t_data *data);
+int		init_data(t_data *data);
+int		init_philos(t_data *data);
 int		parser_main(t_data *data, int ac, char **av);
 
 //Threading
 
 int		create_threads(t_data *data);
+void	*routine(void *arg);
+void	*routine_one(void *arg);
 
 //Time
 

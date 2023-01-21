@@ -12,7 +12,7 @@ SRC=		main.c			\
 			utils2.c		\
 			init_data.c		\
 			time.c			\
-			threading.c
+			routine.c
 
 
 OBJ=		${addprefix ${OBJDIR}/,		\
@@ -32,7 +32,7 @@ ${NAME}:	${OBJ} ${INC}
 ${OBJDIR}:
 			mkdir -p obj
 
-${OBJDIR}/%.o:	%.c ${INC} Makefile
+${OBJDIR}/%.o:	%.c ${INC} Makefile 
 			${CC} ${CFLAGS} -c $< -o $@
 
 

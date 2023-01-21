@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   threading.c                                        :+:      :+:    :+:   */
+/*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmajani <mmajani@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:12:28 by mmajani           #+#    #+#             */
-/*   Updated: 2023/01/19 17:10:08 by mmajani          ###   ########lyon.fr   */
+/*   Updated: 2023/01/21 18:17:13 by mmajani          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	queued_messages(t_philo *philo, char action)
 void	release_forks(t_philo *philo)
 {
 	pthread_mutex_unlock(&philo->data->forks[philo->id]);
-	if (philo->id == philo->data->args[NB_PH - 1])
+	if (philo->id == philo->data->args[NB_PH])
 		pthread_mutex_unlock(&philo->data->forks[0]);
 	else
 		pthread_mutex_unlock(&philo->data->forks[philo->id + 1]);
@@ -53,7 +53,7 @@ int	take_eat_release_forks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->forks[philo->id]);
 	queued_messages(philo, TAKE);
-	if (philo->id == philo->data->args[NB_PH - 1])
+	if (philo->id == philo->data->args[NB_PH])
 		pthread_mutex_lock(&philo->data->forks[0]);
 	else
 		pthread_mutex_lock(&philo->data->forks[philo->id + 1]);
@@ -70,11 +70,24 @@ int	take_eat_release_forks(t_philo *philo)
 	return (1);
 }
 
+void	*routine_one(void *arg)
+{
+	t_philo	*philo;
+
+	philo = arg;
+	queued_messages(philo, TAKE);
+	custom_usleep(philo->data->args[T_DIE], philo);
+	queued_messages(philo, DIE);
+	return (0);
+}
+
 void	*routine(void *arg)
 {
 	t_philo	*philo;
 
 	philo = arg;
+	while (philo->data->start == 0)
+		;
 	if (philo->id % 2 == 0)
 	{
 		queued_messages(philo, THINK);
@@ -85,27 +98,12 @@ void	*routine(void *arg)
 	{
 		if (take_eat_release_forks(philo) == -1)
 			queued_messages(philo, DIE);
+		if (philo->data->args[NB_MEAL]
+			&& philo->meals_taken >= philo->data->args[NB_MEAL] + 1)
+			return (0);
 		queued_messages(philo, SLEEP);
 		custom_usleep(philo->data->args[T_SLEEP], philo);
 		queued_messages(philo, THINK);
 	}
 	return (0);
-}
-
-int	create_threads(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	data->nb = 0;
-	init_philos(data);
-	while (i < data->args[NB_PH])
-	{
-		pthread_create(&data->philo[i].thread, NULL, &routine, &data->philo[i]);
-		i++;
-	}
-	i = 0;
-	while (i < data->args[NB_PH])
-		pthread_join(data->philo[i++].thread, NULL);
-	return (1);
 }
