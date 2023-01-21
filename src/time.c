@@ -6,7 +6,7 @@
 /*   By: mmajani <mmajani@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:12:19 by mmajani           #+#    #+#             */
-/*   Updated: 2023/01/21 19:25:29 by mmajani          ###   ########lyon.fr   */
+/*   Updated: 2023/01/21 23:01:14 by mmajani          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ long	timenow(t_data *data)
 {
 	struct timeval	tv;
 
-	pthread_mutex_init(&data->time, NULL);
 	pthread_mutex_lock(&data->time);
 	gettimeofday(&tv, NULL);
 	if (data->start_time == 0)

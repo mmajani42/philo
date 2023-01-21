@@ -6,7 +6,7 @@
 /*   By: mmajani <mmajani@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:12:10 by mmajani           #+#    #+#             */
-/*   Updated: 2023/01/21 19:25:03 by mmajani          ###   ########lyon.fr   */
+/*   Updated: 2023/01/21 22:48:23 by mmajani          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int	init_philos(t_data *data)
 		data->philo[i].id = i;
 		data->philo[i].meals_taken = 0;
 		data->philo[i].last_meal = 0;
-		data->philo[i++].data = data;
+		data->philo[i].data = data;
+		i++;
 	}
 	return (1);
 }
@@ -48,6 +49,7 @@ int	init_data(t_data *data)
 	pthread_mutex_init(&data->queue, NULL);
 	pthread_mutex_init(&data->die, NULL);
 	pthread_mutex_init(&data->lock, NULL);
+	pthread_mutex_init(&data->time, NULL);
 	data->start_time = 0;
 	return (1);
 }

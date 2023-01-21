@@ -6,7 +6,7 @@
 /*   By: mmajani <mmajani@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:19:40 by mmajani           #+#    #+#             */
-/*   Updated: 2023/01/21 19:24:44 by mmajani          ###   ########lyon.fr   */
+/*   Updated: 2023/01/21 22:27:54 by mmajani          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	create_threads(t_data *data)
 
 	i = 0;
 	init_philos(data);
+	pthread_mutex_lock(&data->lock);
 	data->start = 0;
 	if (data->args[NB_PH] == 1)
 	{
@@ -46,6 +47,7 @@ int	create_threads(t_data *data)
 		i++;
 	}
 	data->start = 1;
+	pthread_mutex_unlock(&data->lock);
 	i = 0;
 	while (i < data->args[NB_PH])
 	{

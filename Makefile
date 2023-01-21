@@ -20,7 +20,7 @@ OBJ=		${addprefix ${OBJDIR}/,		\
 
 INC=		${INCDIR}/philo.h
 
-CC=			gcc -g3 -fsanitize=thread
+CC=			gcc -pthread -fsanitize=thread
 
 CFLAGS=		-Wall -Wextra -Werror
 
