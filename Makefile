@@ -18,11 +18,11 @@ SRC=		main.c			\
 OBJ=		${addprefix ${OBJDIR}/,		\
 			${SRC:.c=.o}}
 
-INC=		${INCDIR}
+INC=		${INCDIR}/philo.h
 
-CC=			cc
+CC=			gcc -g3 -fsanitize=thread
 
-CFLAGS=		-Wall -Wextra 
+CFLAGS=		-Wall -Wextra -Werror
 
 all:		${OBJDIR} ${NAME}
 
@@ -33,7 +33,7 @@ ${OBJDIR}:
 			mkdir -p obj
 
 ${OBJDIR}/%.o:	%.c ${INC} Makefile 
-			${CC} ${CFLAGS} -c $< -o $@
+			${CC} ${CFLAGS} -c $< -o  $@
 
 
 clean:

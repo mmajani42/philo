@@ -6,7 +6,7 @@
 /*   By: mmajani <mmajani@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:12:28 by mmajani           #+#    #+#             */
-/*   Updated: 2023/01/21 18:17:13 by mmajani          ###   ########lyon.fr   */
+/*   Updated: 2023/01/21 19:26:09 by mmajani          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,18 @@ int	queued_messages(t_philo *philo, char action)
 	}
 	if (action == TAKE)
 		printf("%ld %d has taken a fork\n",
-			timenow(), philo->id + 1);
+			timenow(philo->data), philo->id + 1);
 	else if (action == EAT)
-		printf("%ld %d is eating\n", timenow(), philo->id + 1);
+		printf("%ld %d is eating\n", timenow(philo->data), philo->id + 1);
 	else if (action == SLEEP)
-		printf("%ld %d is sleeping\n", timenow(), philo->id + 1);
+		printf("%ld %d is sleeping\n", timenow(philo->data), philo->id + 1);
 	else if (action == THINK)
-		printf("%ld %d is thinking\n", timenow(), philo->id + 1);
+		printf("%ld %d is thinking\n", timenow(philo->data), philo->id + 1);
 	else if (action == DIE)
 	{
 		pthread_mutex_lock(&philo->data->die);
 		philo->data->alive = 0;
-		printf("%ld %d died\n", timenow(), philo->id + 1);
+		printf("%ld %d died\n", timenow(philo->data), philo->id + 1);
 		pthread_mutex_unlock(&philo->data->die);
 	}
 	pthread_mutex_unlock(&philo->data->queue);
@@ -64,7 +64,7 @@ int	take_eat_release_forks(t_philo *philo)
 		release_forks(philo);
 		return (-1);
 	}
-	philo->last_meal = timenow();
+	philo->last_meal = timenow(philo->data);
 	philo->meals_taken++;
 	release_forks(philo);
 	return (1);
@@ -86,14 +86,16 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = arg;
+	pthread_mutex_lock(&philo->data->lock);
 	while (philo->data->start == 0)
 		;
+	pthread_mutex_unlock(&philo->data->lock);
 	if (philo->id % 2 == 0)
 	{
 		queued_messages(philo, THINK);
 		custom_usleep(philo->data->args[T_EAT], philo);
 	}
-	while (philo->data->alive == 1 && timenow()
+	while (philo->data->alive == 1 && timenow(philo->data)
 		- philo->last_meal < philo->data->args[T_DIE])
 	{
 		if (take_eat_release_forks(philo) == -1)
