@@ -6,7 +6,7 @@
 /*   By: mmajani <mmajani@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:12:28 by mmajani           #+#    #+#             */
-/*   Updated: 2023/01/22 01:47:40 by mmajani          ###   ########lyon.fr   */
+/*   Updated: 2023/01/23 12:52:27 by mmajani          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,11 +100,9 @@ void	*routine(void *arg)
 		queued_messages(philo, THINK);
 		custom_usleep(philo->data->args[T_EAT], philo);
 	}
-	while (/*pthread_mutex_lock(&philo->data->queue) &&*/ (
-		philo->data->alive == 1 && timenow(philo->data)
-		- philo->last_meal < philo->data->args[T_DIE]))
+	while (is_alive(philo->data) == 1 && timenow(philo->data)
+		- philo->last_meal < philo->data->args[T_DIE])
 	{
-		//pthread_mutex_unlock(&philo->data->queue);
 		if (take_eat_release_forks(philo) == -1)
 			queued_messages(philo, DIE);
 		if (philo->data->args[NB_MEAL]

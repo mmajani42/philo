@@ -6,7 +6,7 @@
 /*   By: mmajani <mmajani@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:19:40 by mmajani           #+#    #+#             */
-/*   Updated: 2023/01/22 01:12:09 by mmajani          ###   ########lyon.fr   */
+/*   Updated: 2023/01/23 12:55:07 by mmajani          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	free_program(t_data *data)
 	free(data->args);
 	pthread_mutex_destroy(&data->queue);
 	pthread_mutex_destroy(&data->die);
+	pthread_mutex_destroy(&data->time);
 	free(data->philo);
 	while (i >= 0)
 		pthread_mutex_destroy(&data->forks[i--]);
@@ -53,6 +54,19 @@ int	create_threads(t_data *data)
 		i++;
 	}
 	return (1);
+}
+
+int	is_alive(t_data *data)
+{
+	pthread_mutex_lock(&data->queue);
+	if (data->alive == 1)
+	{
+		pthread_mutex_unlock(&data->queue);
+		return (1);
+	}
+	else
+		pthread_mutex_unlock(&data->queue);
+	return (0);
 }
 
 int	main(int ac, char **av)

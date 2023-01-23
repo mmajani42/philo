@@ -6,7 +6,7 @@
 /*   By: mmajani <mmajani@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:11:53 by mmajani           #+#    #+#             */
-/*   Updated: 2023/01/22 01:09:20 by mmajani          ###   ########lyon.fr   */
+/*   Updated: 2023/01/23 12:54:44 by mmajani          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ typedef struct s_data
 	int					*args;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		queue;
-	pthread_mutex_t		lock;
 	pthread_mutex_t		die;
 	pthread_mutex_t		time;
 	long				start_time;
@@ -69,6 +68,7 @@ int		parser_main(t_data *data, int ac, char **av);
 int		create_threads(t_data *data);
 void	*routine(void *arg);
 void	*routine_one(void *arg);
+int		is_alive(t_data *data);
 
 //Time
 

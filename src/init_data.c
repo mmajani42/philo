@@ -6,7 +6,7 @@
 /*   By: mmajani <mmajani@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:12:10 by mmajani           #+#    #+#             */
-/*   Updated: 2023/01/21 22:48:23 by mmajani          ###   ########lyon.fr   */
+/*   Updated: 2023/01/23 12:55:40 by mmajani          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	init_data(t_data *data)
 		data->args[i++] = 0;
 	pthread_mutex_init(&data->queue, NULL);
 	pthread_mutex_init(&data->die, NULL);
-	pthread_mutex_init(&data->lock, NULL);
 	pthread_mutex_init(&data->time, NULL);
 	data->start_time = 0;
 	return (1);
