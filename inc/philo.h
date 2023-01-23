@@ -6,7 +6,7 @@
 /*   By: mmajani <mmajani@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:11:53 by mmajani           #+#    #+#             */
-/*   Updated: 2023/01/21 19:24:29 by mmajani          ###   ########lyon.fr   */
+/*   Updated: 2023/01/22 01:09:20 by mmajani          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h> 
+# include <stdbool.h>
 
 # define NB_PH		0
 # define T_DIE		1
@@ -53,7 +54,7 @@ typedef struct s_data
 	pthread_mutex_t		die;
 	pthread_mutex_t		time;
 	long				start_time;
-	int					alive;
+	bool				alive;
 	int					start;
 }						t_data;
 

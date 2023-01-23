@@ -6,7 +6,7 @@
 /*   By: mmajani <mmajani@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:12:28 by mmajani           #+#    #+#             */
-/*   Updated: 2023/01/21 23:00:58 by mmajani          ###   ########lyon.fr   */
+/*   Updated: 2023/01/22 01:47:40 by mmajani          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,11 @@ void	release_forks(t_philo *philo)
 	{
 		pthread_mutex_unlock(&philo->data->forks[philo->id]);
 		pthread_mutex_unlock(&philo->data->forks[0]);
-		// printf("------------ifPHILO %d release FORK[%d]\n", philo->id + 1, philo->id + 1);
-		// printf("------------ifPHILO %d release FORK[0]\n", philo->id + 1);
 	}
 	else
 	{
 		pthread_mutex_unlock(&philo->data->forks[philo->id]);
 		pthread_mutex_unlock(&philo->data->forks[philo->id + 1]);
-		// printf("------------elPHILO %d release FORK[%d]\n", philo->id + 1, philo->id + 1);
-		// printf("------------elPHILO %d release FORK[%d]\n", philo->id + 1, philo->id + 2);
 	}
 }
 
@@ -65,14 +61,10 @@ int	take_eat_release_forks(t_philo *philo)
 	if (philo->id == philo->data->args[NB_PH] - 1)
 	{
 		pthread_mutex_lock(&philo->data->forks[0]);
-		// printf("------------ifPHILO %d take    FORK[%d]\n", philo->id + 1, philo->id + 1);
-		// printf("------------ifPHILO %d take    FORK[0]\n", philo->id + 1);
 	}
 	else
 	{
 		pthread_mutex_lock(&philo->data->forks[philo->id + 1]);
-		// printf("------------elPHILO %d take    FORK[%d]\n", philo->id + 1, philo->id + 1);
-		// printf("------------elPHILO %d take    FORK[%d]\n", philo->id + 1, philo->id + 2);
 	}
 	queued_messages(philo, TAKE);
 	queued_messages(philo, EAT);
@@ -103,16 +95,16 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = arg;
-	pthread_mutex_lock(&philo->data->lock);
-	pthread_mutex_unlock(&philo->data->lock);
-	if (philo->id % 2 != 0)
+	if (philo->id % 2 == 0)
 	{
 		queued_messages(philo, THINK);
 		custom_usleep(philo->data->args[T_EAT], philo);
 	}
-	while (philo->data->alive == 1 && timenow(philo->data)
-		- philo->last_meal < philo->data->args[T_DIE])
+	while (/*pthread_mutex_lock(&philo->data->queue) &&*/ (
+		philo->data->alive == 1 && timenow(philo->data)
+		- philo->last_meal < philo->data->args[T_DIE]))
 	{
+		//pthread_mutex_unlock(&philo->data->queue);
 		if (take_eat_release_forks(philo) == -1)
 			queued_messages(philo, DIE);
 		if (philo->data->args[NB_MEAL]
